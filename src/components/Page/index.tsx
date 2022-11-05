@@ -1,7 +1,8 @@
-import { FC } from 'react'
-import { Flex } from '@chakra-ui/layout'
-import { Header } from '../Header'
-import Head from 'next/head'
+import { Flex } from "@chakra-ui/layout";
+import { FC } from "react";
+// import { Header } from '../Header'
+import Head from "next/head";
+import SidebarWithHeader from "../SidebarWithHeader";
 // import { useWallet } from '../../context/wallet-provider'
 
 export const Page: FC = ({ children }) => {
@@ -20,19 +21,24 @@ export const Page: FC = ({ children }) => {
     <>
       <Head>
         <title>ilyxium</title>
-        <meta name="description" content="Ethereum + Next.js DApp Boilerplate" />
+        <meta
+          name="description"
+          content="Ethereum + Next.js DApp Boilerplate"
+        />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
       <Flex direction="column" backgroundColor="#1F1B24">
-        <Header />
-        <main>{children}</main>
+        {/* <Header /> */}
+        <SidebarWithHeader>
+          <main>{children}</main>
+        </SidebarWithHeader>
         <Footer />
       </Flex>
     </>
-  )
-}
+  );
+};
 
 const Footer = () => {
-  return <Flex height="10%"></Flex>
-}
+  return <Flex height="10%"></Flex>;
+};

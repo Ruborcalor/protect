@@ -1,65 +1,80 @@
 /* eslint-disable @next/next/no-img-element */
-import NextLink from 'next/link'
+import NextLink from "next/link";
 
-import { Box, Flex, HStack, Stack, Text } from '@chakra-ui/layout'
+import { Box, Flex, HStack, Stack, Text } from "@chakra-ui/layout";
 import {
+  Button,
   Drawer,
   DrawerBody,
   DrawerContent,
   DrawerOverlay,
+  Link,
   useDisclosure,
-  Button,
-  Link
-} from '@chakra-ui/react'
-import Davatar from '@davatar/react'
+} from "@chakra-ui/react";
 import {
   InformationCircleIcon,
-  LoginIcon,
   MenuIcon,
-  XIcon
-} from '@heroicons/react/outline'
-import { ConnectButton } from '@rainbow-me/rainbowkit';
-import { NavDrawerItem, NavItem } from './NavItem'
+  XIcon,
+} from "@heroicons/react/outline";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
+import { NavDrawerItem, NavItem } from "./NavItem";
 
 // @ts-ignore
-import { SocialIcon } from 'react-social-icons'
+import { SocialIcon } from "react-social-icons";
+
+import { IconType } from "react-icons";
+import {
+  FiCompass,
+  FiHome,
+  FiSettings,
+  FiStar,
+  FiTrendingUp,
+} from "react-icons/fi";
+
+interface LinkItemProps {
+  name: string;
+  icon: IconType;
+}
+const LinkItems: Array<LinkItemProps> = [
+  { name: "Home", icon: FiHome },
+  { name: "Trending", icon: FiTrendingUp },
+  { name: "Explore", icon: FiCompass },
+  { name: "Favourites", icon: FiStar },
+  { name: "Settings", icon: FiSettings },
+];
 
 export const Header = () => {
-
-  const { isOpen, onOpen, onClose, onToggle } = useDisclosure()
+  const { isOpen, onOpen, onClose, onToggle } = useDisclosure();
 
   const navItems = [
     {
-      text: 'home',
-      href: '/'
+      text: "home",
+      href: "/",
     },
     {
-      text: 'about',
-      href: '/about',
-      icon: <InformationCircleIcon className="h-6 w-6" />
+      text: "about",
+      href: "/about",
+      icon: <InformationCircleIcon className="h-6 w-6" />,
     },
     {
-      text: '404 page',
-      href: '/error',
-      icon: <InformationCircleIcon className="h-6 w-6" />
-    }
-  ]
-
-
+      text: "404 page",
+      href: "/error",
+      icon: <InformationCircleIcon className="h-6 w-6" />,
+    },
+  ];
 
   return (
     <header>
-      <Stack direction={['column', 'column', 'row']} px={2} py={4}>
+      <Stack direction={["column", "column", "row"]} px={2} py={4}>
         <HStack
-          justifyContent={['space-between']}
-          w={'full'}
-          px={{ base: 0, lg: '2rem' }}
+          justifyContent={["space-between"]}
+          w={"full"}
+          px={{ base: 0, lg: "2rem" }}
         >
           <Box fontWeight="bold" fontSize={[20, 20, 20]}>
             <NextLink href="/" passHref>
               <Link className="center flex gap-2">
-                <span>👽</span>
-                <span className="text-xl">ilyxium</span>
+                <span className="text-xl">Chira Protect</span>
               </Link>
             </NextLink>
           </Box>
@@ -67,8 +82,8 @@ export const Header = () => {
           <HStack>
             <HStack
               px={[4, 4, 0]}
-              display={['none', 'none', 'none', 'flex']}
-              gap={{ lg: '0.4rem', xl: '1.5rem' }}
+              display={["none", "none", "none", "flex"]}
+              gap={{ lg: "0.4rem", xl: "1.5rem" }}
               mr={4}
             >
               {navItems.map((navItem, index) => (
@@ -84,10 +99,10 @@ export const Header = () => {
             {/* Drawer Toggle Button */}
             <Button
               backgroundColor="transparent"
-              display={['flex', 'flex', 'flex', 'none']}
+              display={["flex", "flex", "flex", "none"]}
               color="white"
               _hover={{
-                backgroundColor: '#121212'
+                backgroundColor: "#121212",
               }}
               borderRadius="100%"
               onClick={onOpen}
@@ -104,7 +119,7 @@ export const Header = () => {
 
       {/* Mobile Navbar */}
       <Drawer
-        placement={'top'}
+        placement={"top"}
         isFullHeight={true}
         onClose={onClose}
         isOpen={isOpen}
@@ -123,24 +138,21 @@ export const Header = () => {
               marginBottom="3rem"
               fontSize={[20, 20, 20]}
             >
-              
               <NextLink href="/">
                 <Link className="center flex gap-2">
-                  <span>👽</span>
-                  <span className="text-xl">ilyxium</span>
+                  <span className="text-xl">Chira Protect</span>
                 </Link>
               </NextLink>
 
               {/* Wallet and Close Button Wrapper */}
               <Flex gap="0.5rem">
-
                 {/* Close Icon */}
                 <Button
                   backgroundColor="transparent"
                   color="white"
                   paddingX={0}
                   _hover={{
-                    backgroundColor: 'rgba(255, 255, 255, 0.2)'
+                    backgroundColor: "rgba(255, 255, 255, 0.2)",
                   }}
                   borderRadius="100%"
                   onClick={onToggle}
@@ -154,7 +166,7 @@ export const Header = () => {
             {navItems.map((navItem, index) => (
               <NavDrawerItem onClick={onToggle} key={index} href={navItem.href}>
                 <Flex alignItems="center" gap={2}>
-                  <Text padding="0" fontSize={'2rem'}>
+                  <Text padding="0" fontSize={"2rem"}>
                     {navItem.text}
                   </Text>
                 </Flex>
@@ -171,12 +183,15 @@ export const Header = () => {
               position="absolute"
             >
               {/* Twitter Link - URL SHOULD BE UPDATED */}
-              <SocialIcon bgColor="white" url="https://twitter.com/ilyxium" target="_blank" />
-
+              <SocialIcon
+                bgColor="white"
+                url="https://twitter.com/chira_protect"
+                target="_blank"
+              />
             </Flex>
           </DrawerBody>
         </DrawerContent>
       </Drawer>
     </header>
-  )
-}
+  );
+};
