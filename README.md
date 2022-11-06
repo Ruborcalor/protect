@@ -23,6 +23,8 @@ https://mumbai.polygonscan.com/tx/0xb427dd8c605b40cdd284ccb20427fc53948fe1f7e1aa
 ### Protected NFT
 https://mumbai.polygonscan.com/address/0x83Be1C969B4CDDc1b54eFBb28177Cb3a83A14D88
 
+** not able to verify in Etherscan due to some issue.
+
 ## How it works
 
 ### Smart Contract
