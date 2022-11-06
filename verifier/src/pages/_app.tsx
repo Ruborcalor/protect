@@ -21,11 +21,13 @@ function MyApp({ Component, pageProps }: AppProps) {
     provider,
   });
 
+  const MyComponent = Component as any
+
   return (
     <WagmiConfig client={wagmiClient}>
       <RainbowKitProvider chains={chains}>
         <ChakraProvider theme={theme}>
-          <Component {...pageProps} />
+          <MyComponent {...pageProps} />
         </ChakraProvider>
       </RainbowKitProvider>
     </WagmiConfig>

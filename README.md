@@ -5,7 +5,12 @@
 Did you know for most NFT collections, NFT Royalties aren't actually enforceable and there's no way to ensure that NFT holders are real people?! Chira Protect is here to resolve these and more issues with the mission of giving power back to NFT creators and their communities.
 
 ## Live Demo
-chiro-protect.vercel.app
+
+### Admin (for creators)
+https://chiro-protect.vercel.app/
+
+### Verifier (for holders)
+https://verifier-chiro-protect.vercel.app/
 
 ## How it works
 

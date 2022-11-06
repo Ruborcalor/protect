@@ -53,13 +53,16 @@ function MyApp({ Component, pageProps }: AppProps) {
     localStorage.setItem("global-state", JSON.stringify(globalState));
   }, [globalState]);
 
+
+  const MyComponent = Component as any
+
   return (
     <WagmiConfig client={wagmiClient}>
       <RainbowKitProvider chains={chains}>
         <ChakraProvider theme={theme}>
           <GlobalProvider value={{ globalState, setGlobalState }}>
             <Page>
-              <Component {...pageProps} />
+              <MyComponent {...pageProps} />
             </Page>
           </GlobalProvider>
         </ChakraProvider>
