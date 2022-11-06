@@ -19,7 +19,13 @@ function MyApp({ Component, pageProps }: AppProps) {
   //This is currently using the public alchemy ID. Please add your own to avoid being rate limited
   //Docs can be found here: https://wagmi.sh/docs/providers/alchemy
   const { chains, provider } = configureChains(
-    [chain.polygonMumbai, chain.mainnet, chain.polygon, chain.optimism, chain.arbitrum],
+    [
+      chain.polygonMumbai,
+      chain.mainnet,
+      chain.polygon,
+      chain.optimism,
+      chain.arbitrum,
+    ],
     [alchemyProvider(), publicProvider()]
   );
 

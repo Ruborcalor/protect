@@ -1,5 +1,5 @@
-import { Button, ButtonProps } from '@chakra-ui/react'
-import { FC } from 'react'
+import { Button, ButtonProps } from "@chakra-ui/react";
+import { FC } from "react";
 
 export const NavButton: FC<ButtonProps> = ({ children, onClick }) => {
   return (
@@ -8,14 +8,14 @@ export const NavButton: FC<ButtonProps> = ({ children, onClick }) => {
       backgroundColor="#BB86FC"
       borderRadius="25px"
       _hover={{
-        bg: '#121212'
+        bg: "#121212",
       }}
       _active={{
-        bg: '#121212'
+        bg: "#121212",
       }}
       onClick={onClick}
     >
       {children}
     </Button>
-  )
-}
+  );
+};

@@ -7,6 +7,7 @@ import {
   Input,
   ListItem,
   Modal,
+  Link,
   ModalBody,
   ModalCloseButton,
   ModalContent,
@@ -28,7 +29,10 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import { useState } from "react";
 import { useGlobalContext } from "../components/common/globalState";
+import { createProtector, setProtector } from "../lib/contract";
 // import styles from "../styles/Home.module.css";
+
+import { useSigner, useAccount } from "wagmi";
 
 export interface ProtectionConfiguration {
   // Overview
@@ -46,6 +50,8 @@ export interface ProtectionConfiguration {
   maxPerChiraProtectCommunityMember: number;
 }
 
+import deployments from "../lib/contract/deployments.json";
+
 const Home: NextPage = () => {
   // - collection name
   // - collection address
@@ -60,8 +66,10 @@ const Home: NextPage = () => {
   const { globalState, setGlobalState } = useGlobalContext()!;
 
   // Overview
-  const [collectionName, setCollectionName] = useState("");
-  const [collectionAddress, setCollectionAddress] = useState("");
+  const [collectionName, setCollectionName] = useState("ProtectableERC721");
+  const [collectionAddress, setCollectionAddress] = useState(
+    deployments.sampleERC721Protectable
+  );
 
   // Protocol confiruation
   const [useFriendlyExchangeAllowlist, setUseFriendlyExchangeAllowlist] =
@@ -78,18 +86,16 @@ const Home: NextPage = () => {
     setMaxPerChiraProtectCommunityMember,
   ] = useState(10);
 
-  return (
-    <div>
-      <Head>
-        <title>Chira Protect</title>
-        <meta
-          name="description"
-          content="Create a protection for an NFT collection"
-        />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+  const [modalStatus, setModalStatus] = useState<"progress" | "share">(
+    "progress"
+  );
+  const [ipfsHash, setIPFSHash] = useState("");
 
-      <main>
+  const InternalComponent = () => {
+    const { data: signer } = useSigner();
+
+    return (
+      <>
         <Box padding="4rem" w="80%" m="auto">
           <Heading mb="10">Create Protection for NFT Collection</Heading>
           <Flex
@@ -221,10 +227,10 @@ const Home: NextPage = () => {
                 Holder Configuration
               </Text>
               {/* <Divider
-                borderWidth="1px"
-                mt="10px"
-                style={{ borderBottom: "1px solid black" }}
-              /> */}
+          borderWidth="1px"
+          mt="10px"
+          style={{ borderBottom: "1px solid black" }}
+        /> */}
             </Box>
 
             <Flex
@@ -342,14 +348,18 @@ const Home: NextPage = () => {
             </Flex>
 
             {/* <Box w="100%">
-              <Button colorScheme="blue">Add Rule</Button>
-            </Box> */}
+        <Button colorScheme="blue">Add Rule</Button>
+      </Box> */}
 
             <Box pt="40px" w="100%">
               <Button
                 colorScheme="blue"
                 w="200px"
-                onClick={() => {
+                onClick={async () => {
+                  if (!signer) {
+                    throw new Error("signer is not defined");
+                  }
+                  setModalStatus("progress");
                   const protectConfig = {
                     collectionName: collectionName || "",
                     collectionAddress: collectionAddress || "",
@@ -373,8 +383,33 @@ const Home: NextPage = () => {
                   // ipfs.add(Buffer.from(JSON.stringify(protectConfig)));
 
                   // Send transaction to create new blocklist
+                  // protocolList: string[],
+                  // isAllowedList: boolean[],
+                  // arbitraryLimit: string,
+                  // worldIdLimit: string,
+                  // polygonIdLimit: string
+
+                  // only have opense proxy for demo
+                  const protocolList: string[] = [];
+                  const isAllowedList: boolean[] = [];
+                  const protectorAddress = await createProtector(
+                    signer,
+                    protocolList,
+                    isAllowedList,
+                    maxPerArbitraryHolder.toString(),
+                    maxPerWorldcoinHolder.toString(),
+                    maxPerChiraProtectCommunityMember.toString()
+                  );
 
                   // Send transaction to reassign smart contract blocklist
+                  const { hash } = await setProtector(
+                    signer,
+                    collectionAddress,
+                    protectorAddress
+                  );
+                  console.log(hash);
+                  setIPFSHash("QmWATWQ7fVPP2EFGu71UkfnqhYXDYH566qy47CnJDgvs8u");
+                  setModalStatus("share");
                 }}
               >
                 Create
@@ -386,28 +421,69 @@ const Home: NextPage = () => {
         <Modal onClose={onClose} isOpen={isOpen} isCentered>
           <ModalOverlay />
           <ModalContent>
-            <Progress size="xs" isIndeterminate />
-            <ModalHeader>Protect a Collection</ModalHeader>
-            <ModalCloseButton />
-            <ModalBody>
-              In order to finish protecting the collection, sign two
-              transactions in order to:
-              <OrderedList mt="10px" mb="30px">
-                <ListItem>
-                  Create the protect list smart contract which will protect your
-                  NFT community from mercenaries.
-                </ListItem>
-                <ListItem>
-                  Configure your NFT contract to use the protect list you
-                  created!
-                </ListItem>
-              </OrderedList>
-            </ModalBody>
+            {modalStatus === "progress" && (
+              <>
+                <Progress size="xs" isIndeterminate />
+                <ModalHeader>Protect a Collection</ModalHeader>
+                <ModalCloseButton />
+                <ModalBody>
+                  In order to finish protecting the collection, sign two
+                  transactions in order to:
+                  <OrderedList mt="10px" mb="30px">
+                    <ListItem>
+                      Create the protect list smart contract which will protect
+                      your NFT community from mercenaries.
+                    </ListItem>
+                    <ListItem>
+                      Configure your NFT contract to use the protect list you
+                      created!
+                    </ListItem>
+                  </OrderedList>
+                </ModalBody>
+              </>
+            )}
+            {modalStatus === "share" && (
+              <>
+                <Progress size="xs" isIndeterminate />
+                <ModalHeader>
+                  Please share the link to your community!
+                </ModalHeader>
+                <ModalCloseButton />
+                <ModalBody>
+                  In order to let holders to hold the NFT, please ask user to
+                  verify account by this link.
+                  <Link
+                    href={`https://verifier-chira-protect.vercel.app/${ipfsHash}`}
+                    target={"_blank"}
+                  >
+                    <Text mt="10px" mb="30px" fontSize="xs" color="blue.600">
+                      {`https://verifier-chira-protect.vercel.app/${ipfsHash}`}
+                    </Text>
+                  </Link>
+                </ModalBody>
+              </>
+            )}
             {/* <ModalFooter>
-              <Button onClick={onClose}>Close</Button>
-            </ModalFooter> */}
+        <Button onClick={onClose}>Close</Button>
+      </ModalFooter> */}
           </ModalContent>
         </Modal>
+      </>
+    );
+  };
+
+  return (
+    <div>
+      <Head>
+        <title>Chira Protect</title>
+        <meta
+          name="description"
+          content="Create a protection for an NFT collection"
+        />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+      <main>
+        <InternalComponent />
       </main>
     </div>
   );

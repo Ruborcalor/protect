@@ -1,10 +1,9 @@
-import type { NextPage } from 'next'
+import type { NextPage } from "next";
 
-import { Heading, Flex, Text } from '@chakra-ui/layout'
-import { Image } from '@chakra-ui/react'
+import { Heading, Flex, Text } from "@chakra-ui/layout";
+import { Image } from "@chakra-ui/react";
 
 const About: NextPage = () => {
-
   return (
     <Flex
       direction="row"
@@ -21,18 +20,16 @@ const About: NextPage = () => {
         justifyContent="space-between"
         gap="3rem"
       >
-          <Heading>
-              About Page
-          </Heading>
+        <Heading>About Page</Heading>
 
-          <Text>
-              With this boilerplate, you get a 👉mobile friendly👈 DApp, a few example pages, a scalable header,
-              the wallet connection + one example transaction done for you🤌.
-          </Text>
-
+        <Text>
+          With this boilerplate, you get a 👉mobile friendly👈 DApp, a few
+          example pages, a scalable header, the wallet connection + one example
+          transaction done for you🤌.
+        </Text>
       </Flex>
     </Flex>
-  )
-}
+  );
+};
 
-export default About
+export default About;
