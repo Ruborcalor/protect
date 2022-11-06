@@ -1,6 +1,7 @@
 import { Button, Stack, Text } from "@chakra-ui/react";
 import { defaultAbiCoder as abi } from "@ethersproject/abi";
 import { VerificationResponse, WidgetProps } from "@worldcoin/id";
+import axios from "axios";
 import type { GetServerSideProps, NextPage } from "next";
 import dynamic from "next/dynamic";
 import { useEffect, useMemo, useState } from "react";
@@ -159,6 +160,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const { ipfsHash } = context.query;
 
   // this is set here from ipfs hash because this should accept dynamic setting from the dashboard
+  // const {data: ipfsData} = await  axios.get(`http://ipfs.io/${ipfsHash}`)
+  // console.log(ipfsData)
+
   const data = {
     worldId: true,
     polygonId: {

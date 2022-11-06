@@ -51,6 +51,7 @@ export interface ProtectionConfiguration {
 }
 
 import deployments from "../lib/contract/deployments.json";
+import { ipfs } from "../lib/ipfs";
 
 const Home: NextPage = () => {
   // - collection name
@@ -410,7 +411,24 @@ const Home: NextPage = () => {
                     protectorAddress
                   );
                   console.log(hash);
-                  setIPFSHash("QmWATWQ7fVPP2EFGu71UkfnqhYXDYH566qy47CnJDgvs8u");
+
+
+                  // currently the front does not accept change for demo, so this data is static
+                  const {path} = await ipfs.add(JSON.stringify({
+                    worldId: true,
+                    polygonId: {
+                      req: {
+                        isCommunityMember: {
+                          $eq: 1,
+                        },
+                      },
+                      schema: {
+                        url: "https://s3.eu-west-1.amazonaws.com/polygonid-schemas/47464137-49e5-4e87-a877-89107de70e36.json-ld",
+                        type: "ChiroProtect",
+                      },
+                    },
+                  }))
+                  setIPFSHash(path);
                   setModalStatus("share");
                 }}
               >
