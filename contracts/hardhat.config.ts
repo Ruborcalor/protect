@@ -6,7 +6,11 @@ import { HardhatUserConfig } from "hardhat/config";
 
 import rpc from "./config/rpc.json";
 
-const mnemonic = fs.readFileSync("../mnemonic.txt", "ascii").trim();
+const mnemonicFileName = "../mnemonic.txt";
+let mnemonic = "test ".repeat(11) + "junk";
+if (fs.existsSync(mnemonicFileName)) {
+  mnemonic = fs.readFileSync("../../mnemonic.txt", "ascii").trim();
+}
 
 const config: HardhatUserConfig = {
   solidity: "0.8.17",
