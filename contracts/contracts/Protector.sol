@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import "@openzeppelin/contracts/access/Ownable.sol";
 import "./VerificationResistory.sol";
 
 /**
@@ -10,9 +9,7 @@ import "./VerificationResistory.sol";
  * This should be integrated with ERC721Protectable
  */
 
-// owner management can be intgrated with ERC721 contract
-// but for the simplicity, have seprarete ownable in protector
-contract Protector is Ownable {
+contract Protector {
     // this is static for the demo
     // this should accept update in the real product
     enum ProofType {
@@ -27,12 +24,9 @@ contract Protector is Ownable {
 
     VerificationResistory public verificationResistory;
 
-    constructor(address _verificationResistory) {
-        verificationResistory = VerificationResistory(_verificationResistory);
-    }
-
-    // should be more flexible
-    function set(
+    // should be more flexible, like updating
+    constructor(
+        address _verificationResistory,
         address[] memory protocolList,
         bool[] memory isAllowedList,
         // this is static for the demo
@@ -40,7 +34,8 @@ contract Protector is Ownable {
         uint256 _arbitraryLimit,
         uint256 _worldIdLimit,
         uint256 _polygonIdLimit
-    ) public onlyOwner {
+    ) {
+        verificationResistory = VerificationResistory(_verificationResistory);
         for (uint256 i = 0; i < protocolList.length; i++) {
             allowedProtocols[protocolList[i]] = isAllowedList[i];
         }

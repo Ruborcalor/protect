@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 
 import "./Protector.sol";
@@ -11,7 +10,7 @@ import "./Protector.sol";
  *
  * Useful for scenarios such as enforcing royalty, controll the distribution
  */
-abstract contract ERC721Protectable is Ownable, ERC721 {
+abstract contract ERC721Protectable is ERC721 {
     address private _protectorAddress;
 
     function _setProtectorAddress(address protectorAddress) internal {
