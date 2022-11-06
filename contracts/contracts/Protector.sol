@@ -12,10 +12,6 @@ import "./VerificationResistory.sol";
 contract Protector {
     // this is static for the demo
     // this should accept update in the real product
-    enum ProofType {
-        WorldId,
-        PolygonId
-    }
 
     mapping(address => bool) public allowedProtocols;
     uint256 public arbitraryLimit;
@@ -52,21 +48,39 @@ contract Protector {
         address caller,
         address to,
         uint256 currentToBalance
-    ) public view returns (bool) {
+    )
+        public
+        view
+        returns (
+            // uint256 is error code
+            bool,
+            uint256
+        )
+    {
         if (!allowedProtocols[caller]) {
-            return false;
+            return (false, 0);
         }
         // get which one is the maximum
         // this logic is not effective but it works
         uint256[] memory limits = new uint256[](3);
-        limits[0] = (arbitraryLimit);
-        if (true) {
+        limits[0] = arbitraryLimit;
+        if (
+            verificationResistory.isVerified(
+                to,
+                VerificationResistory.ProofType.WorldId
+            )
+        ) {
             limits[1] = worldIdLimit;
         } else {
             // just minimum value
             limits[1] = 0;
         }
-        if (true) {
+        if (
+            verificationResistory.isVerified(
+                to,
+                VerificationResistory.ProofType.PolygonId
+            )
+        ) {
             limits[2] = polygonIdLimit;
         } else {
             // just minimum value
@@ -74,9 +88,9 @@ contract Protector {
         }
         uint256 limit = _getMax(limits);
         if (currentToBalance >= limit) {
-            return false;
+            return (false, 1);
         }
-        return true;
+        return (true, 0);
     }
 
     function _getMax(uint256[] memory numbers) internal pure returns (uint256) {

@@ -40,14 +40,22 @@ abstract contract ERC721Protectable is ERC721 {
 
             uint256 currentToBalance = balanceOf(to);
             // this msg.sender is transfer from caller, so in our scenario it is market place contract
-            require(
-                Protector(_protectorAddress).isTransferAllowed(
+            (bool result, uint256 code) = Protector(_protectorAddress)
+                .isTransferAllowed(
                     address(this),
                     msg.sender,
                     to,
                     currentToBalance
-                ),
-                "ERC721Protectable: token transfer not allowed"
+                );
+            string memory detail;
+            if (code == 0) {
+                detail = "ERC721Protectable: token transfer not allowed by protocol";
+            } else {
+                detail = "ERC721Protectable: token transfer not allowed to the user";
+            }
+            require(
+                result,
+                detail
             );
         }
     }

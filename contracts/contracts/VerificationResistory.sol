@@ -26,6 +26,7 @@ contract VerificationResistory is WorldIDVerifier, ZKPVerifier {
         WorldId,
         PolygonId
     }
+
     event Verified(address sub, ProofType proofType);
     mapping(address => mapping(ProofType => bool)) internal _isVerified;
 

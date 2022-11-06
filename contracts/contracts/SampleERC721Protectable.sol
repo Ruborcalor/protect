@@ -31,8 +31,8 @@ contract SampleERC721Protectable is Ownable, ERC721Protectable {
         tokenSupply++;
     }
 
-
     function tokenURI(uint256) public pure override returns (string memory) {
-        return "https://raw.githubusercontent.com/Ruborcalor/protect/main/data/metadata.json";
+        return
+            "https://raw.githubusercontent.com/Ruborcalor/protect/main/data/metadata.json";
     }
 }

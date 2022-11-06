@@ -390,8 +390,10 @@ const Home: NextPage = () => {
                   // polygonIdLimit: string
 
                   // only have opense proxy for demo
-                  const protocolList: string[] = [];
-                  const isAllowedList: boolean[] = [];
+                  // this is Conduit in Seaport and it is the transfer proxy
+                  //https://mumbai.polygonscan.com/address/0x1e0049783f008a0085193e00003d00cd54003c71#code
+                  const protocolList: string[] = ["0x1e0049783f008a0085193e00003d00cd54003c71"];
+                  const isAllowedList: boolean[] = [true];
                   const protectorAddress = await createProtector(
                     signer,
                     protocolList,
