@@ -28,7 +28,10 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import { useState } from "react";
 import { useGlobalContext } from "../components/common/globalState";
+import { createProtector, setProtector } from "../lib/contract";
 // import styles from "../styles/Home.module.css";
+
+import { useSigner, useAccount } from "wagmi"; 
 
 export interface ProtectionConfiguration {
   // Overview
@@ -46,6 +49,8 @@ export interface ProtectionConfiguration {
   maxPerChiraProtectCommunityMember: number;
 }
 
+import deployments from "../lib/contract/deployments.json"
+
 const Home: NextPage = () => {
   // - collection name
   // - collection address
@@ -60,8 +65,8 @@ const Home: NextPage = () => {
   const { globalState, setGlobalState } = useGlobalContext()!;
 
   // Overview
-  const [collectionName, setCollectionName] = useState("");
-  const [collectionAddress, setCollectionAddress] = useState("");
+  const [collectionName, setCollectionName] = useState("SampleERC721Protectable");
+  const [collectionAddress, setCollectionAddress] = useState(deployments.sampleERC721Protectable);
 
   // Protocol confiruation
   const [useFriendlyExchangeAllowlist, setUseFriendlyExchangeAllowlist] =
@@ -77,6 +82,12 @@ const Home: NextPage = () => {
     maxPerChiraProtectCommunityMember,
     setMaxPerChiraProtectCommunityMember,
   ] = useState(10);
+
+  const test = useSigner()
+  const { address } = useAccount();
+
+  console.log(address)
+  console.log(test)
 
   return (
     <div>
@@ -349,7 +360,10 @@ const Home: NextPage = () => {
               <Button
                 colorScheme="blue"
                 w="200px"
-                onClick={() => {
+                onClick={async () => {
+                  // if(!signer){
+                  //   return
+                  // }
                   const protectConfig = {
                     collectionName: collectionName || "",
                     collectionAddress: collectionAddress || "",
@@ -373,7 +387,11 @@ const Home: NextPage = () => {
                   // ipfs.add(Buffer.from(JSON.stringify(protectConfig)));
 
                   // Send transaction to create new blocklist
-
+                  // console.log("signer", signer)
+                  // console.log("test 1")
+                  // const protectorAddress = await createProtector(signer!);
+                  // console.log("test 2")
+                  // await setProtector(signer!, collectionAddress, protectorAddress);
                   // Send transaction to reassign smart contract blocklist
                 }}
               >

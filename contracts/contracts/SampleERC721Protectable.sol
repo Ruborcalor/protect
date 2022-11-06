@@ -9,7 +9,7 @@ import "./ERC721Protectable.sol";
  *
  * Useful for scenarios such as enforcing royalty, controll the distribution
  */
-abstract contract SampleERC721Protectable is Ownable, ERC721Protectable {
+contract SampleERC721Protectable is Ownable, ERC721Protectable {
     uint256 public tokenSupply;
 
     constructor() ERC721("ERC721Protectable", "ERC721Protectable") {}
