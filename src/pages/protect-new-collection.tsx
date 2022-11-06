@@ -6,13 +6,23 @@ import {
   Flex,
   Heading,
   Input,
+  ListItem,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalHeader,
+  ModalOverlay,
   NumberDecrementStepper,
   NumberIncrementStepper,
   NumberInput,
   NumberInputField,
   NumberInputStepper,
+  OrderedList,
+  Progress,
   Text,
   Textarea,
+  useDisclosure,
 } from "@chakra-ui/react";
 
 import type { NextPage } from "next";
@@ -45,6 +55,9 @@ const Home: NextPage = () => {
   // - custom allowlist
   // - arbitrary holder
   // - worldcoin verified
+
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
   const { globalState, setGlobalState } = useGlobalContext()!;
 
   // Overview
@@ -333,26 +346,65 @@ const Home: NextPage = () => {
               <Button
                 colorScheme="blue"
                 w="200px"
-                onClick={() =>
-                  setGlobalState(
-                    globalState.concat({
-                      collectionName,
-                      collectionAddress,
-                      useFriendlyExchangeAllowlist,
-                      useFriendlyLendingAllowlist,
-                      customAllowlist,
-                      maxPerArbitraryHolder,
-                      maxPerWorldcoinHolder,
-                      maxPerChiraProtectCommunityMember,
-                    })
-                  )
-                }
+                onClick={() => {
+                  const protectConfig = {
+                    collectionName: collectionName || "",
+                    collectionAddress: collectionAddress || "",
+                    useFriendlyExchangeAllowlist:
+                      useFriendlyExchangeAllowlist || true,
+                    useFriendlyLendingAllowlist:
+                      useFriendlyLendingAllowlist || true,
+                    customAllowlist: customAllowlist || "",
+                    maxPerArbitraryHolder: maxPerArbitraryHolder || 0,
+                    maxPerWorldcoinHolder: maxPerWorldcoinHolder || 0,
+                    maxPerChiraProtectCommunityMember:
+                      maxPerChiraProtectCommunityMember || 0,
+                  };
+                  // Update state
+                  setGlobalState(globalState.concat(protectConfig));
+
+                  onOpen();
+
+                  // Add to ipfs
+                  // TODO Revisit
+                  // ipfs.add(Buffer.from(JSON.stringify(protectConfig)));
+
+                  // Send transaction to create new blocklist
+
+                  // Send transaction to reassign smart contract blocklist
+                }}
               >
                 Create
               </Button>
             </Box>
           </Flex>
         </Box>
+
+        <Modal onClose={onClose} isOpen={isOpen} isCentered>
+          <ModalOverlay />
+          <ModalContent>
+            <Progress size="xs" isIndeterminate />
+            <ModalHeader>Protect a Collection</ModalHeader>
+            <ModalCloseButton />
+            <ModalBody>
+              In order to finish protecting the collection, sign two
+              transactions in order to:
+              <OrderedList mt="10px" mb="30px">
+                <ListItem>
+                  Create the protect list smart contract which will protect your
+                  NFT community from mercenaries.
+                </ListItem>
+                <ListItem>
+                  Configure your NFT contract to use the protect list you
+                  created!
+                </ListItem>
+              </OrderedList>
+            </ModalBody>
+            {/* <ModalFooter>
+              <Button onClick={onClose}>Close</Button>
+            </ModalFooter> */}
+          </ModalContent>
+        </Modal>
       </main>
     </div>
   );

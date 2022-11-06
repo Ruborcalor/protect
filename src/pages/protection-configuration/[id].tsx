@@ -13,6 +13,7 @@ import {
   NumberInputStepper,
   Text,
   Textarea,
+  useDisclosure,
 } from "@chakra-ui/react";
 import { create } from "ipfs-http-client";
 
@@ -27,6 +28,8 @@ const Home: NextPage = () => {
   const router = useRouter();
   const { id } = router.query;
   const { globalState, setGlobalState } = useGlobalContext()!;
+
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const protectionConfig = globalState.find(
     (config) => config.collectionAddress == id
@@ -357,6 +360,10 @@ const Home: NextPage = () => {
                   // Add to ipfs
                   // TODO Revisit
                   // ipfs.add(Buffer.from(JSON.stringify(protectConfig)));
+
+                  // Send transaction to create new blocklist
+
+                  // Send transaction to reassign smart contract blocklist
                 }}
               >
                 Create

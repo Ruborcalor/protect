@@ -19,7 +19,7 @@ import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useRouter } from "next/router";
 import { ReactNode, ReactText, useEffect, useState } from "react";
 import { IconType } from "react-icons";
-import { FiBarChart, FiHome, FiMenu, FiTrendingUp } from "react-icons/fi";
+import { FiBox, FiHome, FiMenu, FiTrendingUp } from "react-icons/fi";
 import { useGlobalContext } from "../common/globalState";
 
 interface LinkItemProps {
@@ -101,12 +101,12 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
           [
             protectionConfig.collectionName,
             "/protection-configuration/" + protectionConfig.collectionAddress,
-            FiBarChart,
+            FiBox,
           ] as [string, string, any]
       );
 
       collections.push([
-        "Create Protection For Collection",
+        "Protect a Collection",
         "/protect-new-collection",
         PlusCircleIcon,
       ]);
