@@ -65,7 +65,5 @@ contract WorldIDVerifier {
 
         // finally, we record they've done this, so they can't do it again (proof of uniqueness)
         nullifierHashes[nullifierHash] = true;
-
-        // your logic here, make sure to emit some kind of event afterwards!
     }
 }
