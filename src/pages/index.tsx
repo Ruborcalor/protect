@@ -1,7 +1,6 @@
-import { BigNumber } from "@ethersproject/bignumber";
 import type { NextPage } from "next";
 import Head from "next/head";
-import { useAccount, useSendTransaction } from "wagmi";
+import { useAccount } from "wagmi";
 import CallToActionWithIllustrationLoggedIn from "../components/HeroLoggedIn";
 import CallToActionWithIllustrationLoggedOut from "../components/HeroLoggedOut";
 // import styles from "../styles/Home.module.css";
@@ -80,13 +79,6 @@ import CallToActionWithIllustrationLoggedOut from "../components/HeroLoggedOut";
 
 const Home: NextPage = () => {
   const { isConnected } = useAccount();
-  const { data, isIdle, isError, isLoading, isSuccess, sendTransaction } =
-    useSendTransaction({
-      request: {
-        to: "yanniksood.eth",
-        value: BigNumber.from("10000000000000000"), // .1 ETH
-      },
-    });
 
   const Body = () => {
     if (isConnected) {
@@ -109,8 +101,15 @@ const Home: NextPage = () => {
 
       <main>
         <Body />
+      </main>
+    </div>
+  );
+};
 
-        {/* <div className={styles.grid}>
+export default Home;
+
+{
+  /* <div className={styles.grid}>
           <Link href="https://twitter.com/yanniksood" isExternal>
             <Button
               backgroundColor="#BB86FC"
@@ -141,10 +140,5 @@ const Home: NextPage = () => {
           >
             <p>Donate some ETH</p>
           </Button>
-        </div> */}
-      </main>
-    </div>
-  );
-};
-
-export default Home;
+        </div> */
+}

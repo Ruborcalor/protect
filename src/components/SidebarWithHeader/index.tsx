@@ -168,7 +168,7 @@ const NavItem = ({ icon, href, children, ...rest }: NavItemProps) => {
       href={href}
       style={{
         textDecoration: "none",
-        fontWeight: router.asPath == href ? "bold" : "",
+        fontWeight: router.asPath == href ? "bold" : "normal",
       }}
       _focus={{ boxShadow: "none" }}
     >

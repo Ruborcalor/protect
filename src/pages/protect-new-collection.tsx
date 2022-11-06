@@ -2,7 +2,6 @@ import {
   Box,
   Button,
   Checkbox,
-  Divider,
   Flex,
   Heading,
   Input,
@@ -104,7 +103,7 @@ const Home: NextPage = () => {
               <Text fontSize="3xl" as="b">
                 Overview
               </Text>
-              <Divider borderWidth="2px" mt="10px" />
+              {/* <Divider borderWidth="1px" mt="10px" /> */}
             </Box>
             <Flex
               alignItems="center"
@@ -150,7 +149,7 @@ const Home: NextPage = () => {
               <Text fontSize="3xl" as="b">
                 Protocol Customization
               </Text>
-              <Divider borderWidth="2px" mt="10px" />
+              {/* <Divider borderWidth="1px" mt="10px" /> */}
             </Box>
             <Flex
               alignItems="center"
@@ -221,7 +220,11 @@ const Home: NextPage = () => {
               <Text fontSize="3xl" as="b">
                 Holder Configuration
               </Text>
-              <Divider borderWidth="2px" mt="10px" />
+              {/* <Divider
+                borderWidth="1px"
+                mt="10px"
+                style={{ borderBottom: "1px solid black" }}
+              /> */}
             </Box>
 
             <Flex
@@ -326,7 +329,7 @@ const Home: NextPage = () => {
                   max={20}
                   value={maxPerChiraProtectCommunityMember}
                   onChange={(_, valueAsNum) =>
-                    setMaxPerWorldcoinHolder(valueAsNum)
+                    setMaxPerChiraProtectCommunityMember(valueAsNum)
                   }
                 >
                   <NumberInputField />
