@@ -14,11 +14,12 @@ import {
   Text,
   Textarea,
 } from "@chakra-ui/react";
+import { create } from "ipfs-http-client";
 
 import type { NextPage } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useGlobalContext } from "../../components/common/globalState";
 import styles from "../../styles/Home.module.css";
 
@@ -34,27 +35,43 @@ const Home: NextPage = () => {
   console.log(protectionConfig);
 
   // Overview
-  const [collectionName, setCollectionName] = useState(
-    protectionConfig?.collectionName
-  );
-  const [collectionAddress, setCollectionAddress] = useState(
-    protectionConfig?.collectionAddress
-  );
+  const [collectionName, setCollectionName] = useState("");
+  const [collectionAddress, setCollectionAddress] = useState("");
 
   // Protocol confiruation
   const [useFriendlyExchangeAllowlist, setUseFriendlyExchangeAllowlist] =
-    useState(protectionConfig?.useFriendlyExchangeAllowlist);
+    useState(true);
   const [useFriendlyLendingAllowlist, setUseFriendlyLendingAllowlist] =
-    useState(protectionConfig?.useFriendlyLendingAllowlist);
+    useState(true);
   const [customAllowlist, setCustomAllowlist] = useState("");
 
   // Holder configuration
-  const [maxPerArbitraryHolder, setMaxPerArbitraryHolder] = useState(
-    protectionConfig?.maxPerArbitraryHolder
-  );
-  const [maxPerWorldcoinHolder, setMaxPerWorldcoinHolder] = useState(
-    protectionConfig?.maxPerWorldcoinHolder
-  );
+  const [maxPerArbitraryHolder, setMaxPerArbitraryHolder] = useState(0);
+  const [maxPerWorldcoinHolder, setMaxPerWorldcoinHolder] = useState(5);
+  const [
+    maxPerChiraProtectCommunityMember,
+    setMaxPerChiraProtectCommunityMember,
+  ] = useState(10);
+
+  const ipfs = create();
+
+  useEffect(() => {
+    if (protectionConfig) {
+      setCollectionName(protectionConfig!.collectionName);
+      setCollectionAddress(protectionConfig!.collectionAddress);
+
+      setUseFriendlyExchangeAllowlist(
+        protectionConfig!.useFriendlyExchangeAllowlist
+      );
+      setUseFriendlyLendingAllowlist(
+        protectionConfig!.useFriendlyLendingAllowlist
+      );
+      setCustomAllowlist(protectionConfig!.customAllowlist);
+
+      setMaxPerArbitraryHolder(protectionConfig!.maxPerArbitraryHolder);
+      setMaxPerWorldcoinHolder(protectionConfig!.maxPerWorldcoinHolder);
+    }
+  }, [protectionConfig]);
 
   return (
     <div className={styles.container}>
@@ -241,6 +258,12 @@ const Home: NextPage = () => {
                     ) {
                       setMaxPerWorldcoinHolder(maxPerArbitraryHolder);
                     }
+
+                    if (maxPerChiraProtectCommunityMember < valueAsNum) {
+                      setMaxPerChiraProtectCommunityMember(
+                        maxPerArbitraryHolder
+                      );
+                    }
                   }}
                 >
                   <NumberInputField />
@@ -279,6 +302,33 @@ const Home: NextPage = () => {
               </Box>
             </Flex>
 
+            <Flex
+              alignItems="center"
+              justifyContent="space-between"
+              gap="6"
+              width="100%"
+            >
+              <Box>
+                <Text fontSize="xl">Chira Protect Community Member</Text>
+              </Box>
+              <Box w="100px">
+                <NumberInput
+                  min={maxPerArbitraryHolder}
+                  max={20}
+                  value={maxPerChiraProtectCommunityMember}
+                  onChange={(_, valueAsNum) =>
+                    setMaxPerWorldcoinHolder(valueAsNum)
+                  }
+                >
+                  <NumberInputField />
+                  <NumberInputStepper>
+                    <NumberIncrementStepper />
+                    <NumberDecrementStepper />
+                  </NumberInputStepper>
+                </NumberInput>
+              </Box>
+            </Flex>
+
             {/* <Box w="100%">
               <Button colorScheme="blue">Add Rule</Button>
             </Box> */}
@@ -287,21 +337,27 @@ const Home: NextPage = () => {
               <Button
                 colorScheme="blue"
                 w="200px"
-                onClick={() =>
-                  setGlobalState(
-                    globalState.concat({
-                      collectionName: collectionName || "",
-                      collectionAddress: collectionAddress || "",
-                      useFriendlyExchangeAllowlist:
-                        useFriendlyExchangeAllowlist || true,
-                      useFriendlyLendingAllowlist:
-                        useFriendlyLendingAllowlist || true,
-                      customAllowlist: customAllowlist || "",
-                      maxPerArbitraryHolder: maxPerArbitraryHolder || 0,
-                      maxPerWorldcoinHolder: maxPerWorldcoinHolder || 0,
-                    })
-                  )
-                }
+                onClick={() => {
+                  const protectConfig = {
+                    collectionName: collectionName || "",
+                    collectionAddress: collectionAddress || "",
+                    useFriendlyExchangeAllowlist:
+                      useFriendlyExchangeAllowlist || true,
+                    useFriendlyLendingAllowlist:
+                      useFriendlyLendingAllowlist || true,
+                    customAllowlist: customAllowlist || "",
+                    maxPerArbitraryHolder: maxPerArbitraryHolder || 0,
+                    maxPerWorldcoinHolder: maxPerWorldcoinHolder || 0,
+                    maxPerChiraProtectCommunityMember:
+                      maxPerChiraProtectCommunityMember || 0,
+                  };
+                  // Update state
+                  setGlobalState(globalState.concat(protectConfig));
+
+                  // Add to ipfs
+                  // TODO Revisit
+                  // ipfs.add(Buffer.from(JSON.stringify(protectConfig)));
+                }}
               >
                 Create
               </Button>

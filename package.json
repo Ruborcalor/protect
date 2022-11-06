@@ -22,6 +22,7 @@
     "@rainbow-me/rainbowkit": "^0.4.1",
     "ethers": "^5.5.4",
     "framer-motion": "^6.3.0",
+    "ipfs-http-client": "^59.0.0",
     "next": "12.1.0",
     "prop-types": "^15.8.1",
     "react": "17.0.2",

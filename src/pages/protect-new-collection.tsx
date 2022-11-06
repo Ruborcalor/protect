@@ -34,6 +34,7 @@ export interface ProtectionConfiguration {
   // Holder configuration
   maxPerArbitraryHolder: number;
   maxPerWorldcoinHolder: number;
+  maxPerChiraProtectCommunityMember: number;
 }
 
 const Home: NextPage = () => {
@@ -60,6 +61,10 @@ const Home: NextPage = () => {
   // Holder configuration
   const [maxPerArbitraryHolder, setMaxPerArbitraryHolder] = useState(0);
   const [maxPerWorldcoinHolder, setMaxPerWorldcoinHolder] = useState(5);
+  const [
+    maxPerChiraProtectCommunityMember,
+    setMaxPerChiraProtectCommunityMember,
+  ] = useState(10);
 
   return (
     <div className={styles.container}>
@@ -240,8 +245,20 @@ const Home: NextPage = () => {
                   value={maxPerArbitraryHolder}
                   onChange={(_, valueAsNum) => {
                     setMaxPerArbitraryHolder(valueAsNum);
-                    if (maxPerWorldcoinHolder < valueAsNum) {
+                    if (
+                      maxPerWorldcoinHolder &&
+                      maxPerWorldcoinHolder < valueAsNum
+                    ) {
                       setMaxPerWorldcoinHolder(maxPerArbitraryHolder);
+                    }
+
+                    if (
+                      maxPerChiraProtectCommunityMember &&
+                      maxPerChiraProtectCommunityMember < valueAsNum
+                    ) {
+                      setMaxPerChiraProtectCommunityMember(
+                        maxPerArbitraryHolder
+                      );
                     }
                   }}
                 >
@@ -281,6 +298,33 @@ const Home: NextPage = () => {
               </Box>
             </Flex>
 
+            <Flex
+              alignItems="center"
+              justifyContent="space-between"
+              gap="6"
+              width="100%"
+            >
+              <Box>
+                <Text fontSize="xl">Chira Protect Community Member</Text>
+              </Box>
+              <Box w="100px">
+                <NumberInput
+                  min={maxPerArbitraryHolder}
+                  max={20}
+                  value={maxPerChiraProtectCommunityMember}
+                  onChange={(_, valueAsNum) =>
+                    setMaxPerWorldcoinHolder(valueAsNum)
+                  }
+                >
+                  <NumberInputField />
+                  <NumberInputStepper>
+                    <NumberIncrementStepper />
+                    <NumberDecrementStepper />
+                  </NumberInputStepper>
+                </NumberInput>
+              </Box>
+            </Flex>
+
             {/* <Box w="100%">
               <Button colorScheme="blue">Add Rule</Button>
             </Box> */}
@@ -299,6 +343,7 @@ const Home: NextPage = () => {
                       customAllowlist,
                       maxPerArbitraryHolder,
                       maxPerWorldcoinHolder,
+                      maxPerChiraProtectCommunityMember,
                     })
                   )
                 }
