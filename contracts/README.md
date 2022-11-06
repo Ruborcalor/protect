@@ -19,6 +19,6 @@ As described in the main [README](../../README.md), the following codes are used
 ## Development
 
 ```
-npm i
-npm run test
+yarn
+yarn test
 ```

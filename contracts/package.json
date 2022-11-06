@@ -8,7 +8,7 @@
     "test": "hardhat test",
     "build": "hardhat compile",
     "lint": "eslint '**/*.{js,ts}' --ignore-path .gitignore",
-    "prettier": "prettier '**/*.{json,md}' --ignore-path .gitignore --write"
+    "prettier": "prettier '**/*.{json,md,sol}' --ignore-path .gitignore --write"
   },
   "devDependencies": {
     "@ethersproject/abi": "^5.7.0",
@@ -30,6 +30,7 @@
     "hardhat": "^2.12.2",
     "hardhat-dependency-compiler": "^1.1.3",
     "hardhat-gas-reporter": "^1.0.9",
+    "patch-package": "^6.5.0",
     "prettier": "^2.7.1",
     "prettier-plugin-solidity": "^1.0.0-beta.24",
     "solidity-coverage": "^0.8.2",
@@ -38,6 +39,7 @@
   },
   "dependencies": {
     "@appliedzkp/semaphore-contracts": "^0.10.0",
+    "@openzeppelin/contracts": "^4.7.3",
     "@worldcoin/world-id-contracts": "^0.1.1",
     "@zk-kit/identity": "^1.4.1",
     "@zk-kit/protocols": "^1.11.1",
