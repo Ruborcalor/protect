@@ -20,6 +20,9 @@ https://mumbai.polygonscan.com/address/0x83Be1C969B4CDDc1b54eFBb28177Cb3a83A14D8
 #### setup
 https://mumbai.polygonscan.com/tx/0xb427dd8c605b40cdd284ccb20427fc53948fe1f7e1aa33e22ab25f9b76a7573a
 
+#### Sending world id proof
+https://mumbai.polygonscan.com/tx/0xee7cd38c3b6d263922fccc0b4b00d96a4be0da38ae6010c91675bccf8a9d6ae8
+
 ### Protected NFT
 https://mumbai.polygonscan.com/address/0x83Be1C969B4CDDc1b54eFBb28177Cb3a83A14D88
 
