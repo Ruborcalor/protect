@@ -13,6 +13,8 @@ import "./Protector.sol";
 abstract contract ERC721Protectable is ERC721 {
     address private _protectorAddress;
 
+    bool internal _isInitialized;
+
     function _setProtectorAddress(address protectorAddress) internal {
         _protectorAddress = protectorAddress;
     }
@@ -26,8 +28,16 @@ abstract contract ERC721Protectable is ERC721 {
         uint256 tokenId
     ) internal virtual override {
         super._beforeTokenTransfer(from, to, tokenId);
-        // this check is done only protectorAddress is set
-        if (_protectorAddress != address(0x0)) {
+
+        // this is to pass the initial mint for better demo
+        if (_isInitialized) {
+            // this cotract requires to set the protected address
+            // we can have better model for this, but this is simplest for the allow list pattern demo
+            require(
+                _protectorAddress != address(0x0),
+                "ERC721Protectable: should set the protector address"
+            );
+
             uint256 currentToBalance = balanceOf(to);
             // this msg.sender is transfer from caller, so in our scenario it is market place contract
             require(
