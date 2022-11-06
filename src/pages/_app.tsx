@@ -53,8 +53,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     localStorage.setItem("global-state", JSON.stringify(globalState));
   }, [globalState]);
 
-
-  const MyComponent = Component as any
+  const MyComponent = Component as any;
 
   return (
     <WagmiConfig client={wagmiClient}>
