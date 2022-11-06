@@ -47,11 +47,9 @@ contract VerificationResistory is WorldIDVerifier, ZKPVerifier {
      * functions
      * ====================
      */
-
     /*
      * common
      */
-
     function isVerified(
         address sub,
         ProofType proofType

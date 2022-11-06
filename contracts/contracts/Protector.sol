@@ -2,6 +2,7 @@
 pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
+import "./VerificationResistory.sol";
 
 /**
  * @dev contract manages allow list of the trade
@@ -14,32 +15,38 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 contract Protector is Ownable {
     // this is static for the demo
     // this should accept update in the real product
-    enum HolderConfigrationType {
-        ArbitraryHolder,
-        WorldcoinVerified,
-        ChiraProtectCommunityMember
-        // should support more and make it flexible
+    enum ProofType {
+        WorldId,
+        PolygonId
     }
 
     mapping(address => bool) public allowedProtocols;
-    mapping(address => uint256) public limits;
+    uint256 public arbitraryLimit;
+    uint256 public worldIdLimit;
+    uint256 public polygonIdLimit;
 
-    function setAlloedProtocols(
+    VerificationResistory public verificationResistory;
+
+    constructor(address _verificationResistory) {
+        verificationResistory = VerificationResistory(_verificationResistory);
+    }
+
+    // should be more flexible
+    function set(
         address[] memory protocolList,
-        bool[] memory isAllowedList
+        bool[] memory isAllowedList,
+        // this is static for the demo
+        // this should accept update in the real product
+        uint256 _arbitraryLimit,
+        uint256 _worldIdLimit,
+        uint256 _polygonIdLimit
     ) public onlyOwner {
         for (uint256 i = 0; i < protocolList.length; i++) {
             allowedProtocols[protocolList[i]] = isAllowedList[i];
         }
-    }
-
-    function setLimits(
-        address[] memory toList,
-        uint256[] memory limitList
-    ) public onlyOwner {
-        for (uint256 i = 0; i < toList.length; i++) {
-            limits[toList[i]] = limitList[i];
-        }
+        arbitraryLimit = _arbitraryLimit;
+        worldIdLimit = _worldIdLimit;
+        polygonIdLimit = _polygonIdLimit;
     }
 
     // this function checkes
@@ -54,9 +61,37 @@ contract Protector is Ownable {
         if (!allowedProtocols[caller]) {
             return false;
         }
-        if (currentToBalance >= limits[to]) {
+        // get which one is the maximum
+        // this logic is not effective but it works
+        uint256[] memory limits = new uint256[](3);
+        limits[0] = (arbitraryLimit);
+        if (true) {
+            limits[1] = worldIdLimit;
+        } else {
+            // just minimum value
+            limits[1] = 0;
+        }
+        if (true) {
+            limits[2] = polygonIdLimit;
+        } else {
+            // just minimum value
+            limits[2] = 0;
+        }
+        uint256 limit = _getMax(limits);
+        if (currentToBalance >= limit) {
             return false;
         }
         return true;
+    }
+
+    function _getMax(uint256[] memory numbers) internal pure returns (uint256) {
+        require(numbers.length > 0); // throw an exception if the condition is not met
+        uint256 maxNumber; // default 0, the lowest value of `uint256`
+        for (uint256 i = 0; i < numbers.length; i++) {
+            if (numbers[i] > maxNumber) {
+                maxNumber = numbers[i];
+            }
+        }
+        return maxNumber;
     }
 }
