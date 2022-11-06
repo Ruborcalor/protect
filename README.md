@@ -55,7 +55,3 @@ This is a credential that is used in the demo
 ![ipfs-data-integration](./docs/ipfs-data-integration.png)
 
 We put the required credential information in IPFS and the URI with IPFS hash is shared with users to access the verify page. By IPFS, we can easily build data sharing in a verifiable way.
-
-#### Dune Analuytics
-
-We use Dune to track the Onchain verification data status, and that analytics can be provided to NFT creators to manage NFT distributions.
