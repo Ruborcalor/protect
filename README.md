@@ -12,6 +12,17 @@ https://chiro-protect.vercel.app/
 ### Verifier (for holders)
 https://verifier-chiro-protect.vercel.app/
 
+## Deployed Contracts
+
+### Onchain zkProof Registory
+https://mumbai.polygonscan.com/address/0x83Be1C969B4CDDc1b54eFBb28177Cb3a83A14D88
+
+#### setup
+https://mumbai.polygonscan.com/tx/0xb427dd8c605b40cdd284ccb20427fc53948fe1f7e1aa33e22ab25f9b76a7573a
+
+### Protected NFT
+https://mumbai.polygonscan.com/address/0x83Be1C969B4CDDc1b54eFBb28177Cb3a83A14D88
+
 ## How it works
 
 ### Smart Contract

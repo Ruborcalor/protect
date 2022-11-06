@@ -9,7 +9,7 @@ import rpc from "./config/rpc.json";
 const mnemonicFileName = "../mnemonic.txt";
 let mnemonic = "test ".repeat(11) + "junk";
 if (fs.existsSync(mnemonicFileName)) {
-  mnemonic = fs.readFileSync("../../mnemonic.txt", "ascii").trim();
+  mnemonic = fs.readFileSync(mnemonicFileName, "ascii").trim();
 }
 
 const config: HardhatUserConfig = {
@@ -33,7 +33,9 @@ const config: HardhatUserConfig = {
     currency: "USD",
   },
   etherscan: {
-    apiKey: process.env.ETHERSCAN_API_KEY,
+    apiKey: {
+      polygonMumbai: process.env.ETHERSCAN_API_KEY,
+    }
   },
   dependencyCompiler: {
     paths: ["@appliedzkp/semaphore-contracts/base/Verifier.sol", "@worldcoin/world-id-contracts/src/Semaphore.sol"],
