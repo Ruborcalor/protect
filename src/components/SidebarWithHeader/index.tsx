@@ -14,16 +14,13 @@ import {
   useColorModeValue,
   useDisclosure,
 } from "@chakra-ui/react";
+import { PlusCircleIcon } from "@heroicons/react/outline";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
-import { ReactNode, ReactText } from "react";
+import { useRouter } from "next/router";
+import { ReactNode, ReactText, useEffect, useState } from "react";
 import { IconType } from "react-icons";
-import {
-  FiBell,
-  FiHome,
-  FiMenu,
-  FiSettings,
-  FiTrendingUp,
-} from "react-icons/fi";
+import { FiBarChart, FiHome, FiMenu, FiTrendingUp } from "react-icons/fi";
+import { useGlobalContext } from "../common/globalState";
 
 interface LinkItemProps {
   name: string;
@@ -35,7 +32,7 @@ const LinkItems: Array<LinkItemProps> = [
   { name: "About", icon: FiTrendingUp, href: "/about" },
   //   { name: "Explore", icon: FiCompass },
   //   { name: "Favourites", icon: FiStar },
-  { name: "Settings", icon: FiSettings, href: "/settings" },
+  //   { name: "Settings", icon: FiSettings, href: "/settings" },
 ];
 
 export default function SidebarWithHeader({
@@ -44,6 +41,7 @@ export default function SidebarWithHeader({
   children: ReactNode;
 }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
+
   return (
     <Box minH="100vh" bg={useColorModeValue("gray.100", "gray.900")}>
       <SidebarContent
@@ -77,27 +75,80 @@ interface SidebarProps extends BoxProps {
 }
 
 const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
+  const generalNav: [string, string, any][] = [["Dashboard", "/", FiHome]];
+
+  const [nftcollectionsNav, setNftcollectionsNav] = useState<
+    [string, string, any][]
+  >([]);
+
+  //   const protectlistsNav: [string, string, any][] = [
+  //     ["New Protect List", "/create/protectlist", PlusCircleIcon],
+  //   ];
+
+  const navSections: [string, [string, string, any][]][] = [
+    ["General", generalNav],
+    ["NFT Collections", nftcollectionsNav],
+    //   ["Protect Lists", protectlistsNav],
+  ];
+
+  const { globalState } = useGlobalContext()!;
+  console.log(globalState);
+
+  useEffect(() => {
+    if (globalState) {
+      const collections = globalState.map(
+        (protectionConfig) =>
+          [
+            protectionConfig.collectionName,
+            "/protection-configuration/" + protectionConfig.collectionAddress,
+            FiBarChart,
+          ] as [string, string, any]
+      );
+
+      collections.push([
+        "Create Protection For Collection",
+        "/protect-new-collection",
+        PlusCircleIcon,
+      ]);
+      setNftcollectionsNav(collections);
+    }
+  }, [globalState]);
+
   return (
     <Box
       transition="3s ease"
       bg={useColorModeValue("white", "gray.900")}
       borderRight="1px"
       borderRightColor={useColorModeValue("gray.200", "gray.700")}
-      w={{ base: "full", md: 60 }}
+      w={{ base: "full", md: "260px" }}
       pos="fixed"
       h="full"
       {...rest}
     >
       <Flex h="20" alignItems="center" mx="8" justifyContent="space-between">
         <Text fontSize="2xl" fontFamily="monospace" fontWeight="bold">
-          Protect
+          Chira Protect
         </Text>
         <CloseButton display={{ base: "flex", md: "none" }} onClick={onClose} />
       </Flex>
-      {LinkItems.map((link) => (
-        <NavItem key={link.name} icon={link.icon} href={link.href}>
-          {link.name}
-        </NavItem>
+      {navSections.map(([sectionName, section], index) => (
+        <div key={sectionName}>
+          <Text
+            style={{
+              margin: "30px 0 0 30px",
+              fontSize: "12px",
+              textTransform: "uppercase",
+              letterSpacing: "1px",
+            }}
+          >
+            {sectionName}
+          </Text>
+          {section.map(([name, route, e]) => (
+            <NavItem key={name} icon={e} href={route}>
+              {name}
+            </NavItem>
+          ))}
+        </div>
       ))}
     </Box>
   );
@@ -109,10 +160,16 @@ interface NavItemProps extends FlexProps {
   children: ReactText;
 }
 const NavItem = ({ icon, href, children, ...rest }: NavItemProps) => {
+  const router = useRouter();
+
+  console.log(router.asPath);
   return (
     <Link
       href={href}
-      style={{ textDecoration: "none" }}
+      style={{
+        textDecoration: "none",
+        fontWeight: router.asPath == href ? "bold" : "",
+      }}
       _focus={{ boxShadow: "none" }}
     >
       <Flex
@@ -123,8 +180,8 @@ const NavItem = ({ icon, href, children, ...rest }: NavItemProps) => {
         role="group"
         cursor="pointer"
         _hover={{
-          bg: "cyan.400",
-          color: "white",
+          //   bg: "cyan.400",
+          color: "cyan.400",
         }}
         {...rest}
       >
@@ -133,7 +190,7 @@ const NavItem = ({ icon, href, children, ...rest }: NavItemProps) => {
             mr="4"
             fontSize="16"
             _groupHover={{
-              color: "white",
+              color: "cyan.400",
             }}
             as={icon}
           />
@@ -178,12 +235,12 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
       </Text>
 
       <HStack spacing={{ base: "0", md: "6" }}>
-        <IconButton
+        {/* <IconButton
           size="lg"
           variant="ghost"
           aria-label="open menu"
           icon={<FiBell />}
-        />
+        /> */}
 
         <ConnectButton />
         {/* <Flex alignItems={"center"}>
