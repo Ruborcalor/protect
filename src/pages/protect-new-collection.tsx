@@ -29,7 +29,7 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import { useState } from "react";
 import { useGlobalContext } from "../components/common/globalState";
-import styles from "../styles/Home.module.css";
+// import styles from "../styles/Home.module.css";
 
 export interface ProtectionConfiguration {
   // Overview
@@ -80,7 +80,7 @@ const Home: NextPage = () => {
   ] = useState(10);
 
   return (
-    <div className={styles.container}>
+    <div>
       <Head>
         <title>Chira Protect</title>
         <meta

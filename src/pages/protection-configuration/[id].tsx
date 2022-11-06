@@ -22,7 +22,7 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useGlobalContext } from "../../components/common/globalState";
-import styles from "../../styles/Home.module.css";
+// import styles from "../../styles/Home.module.css";
 
 const Home: NextPage = () => {
   const router = useRouter();
@@ -77,7 +77,7 @@ const Home: NextPage = () => {
   }, [protectionConfig]);
 
   return (
-    <div className={styles.container}>
+    <div>
       <Head>
         <title>Chira Protect</title>
         <meta
