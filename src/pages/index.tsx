@@ -1,77 +1,82 @@
-import { Flex, Heading, ListItem, OrderedList, Text } from "@chakra-ui/layout";
 import { BigNumber } from "@ethersproject/bignumber";
 import type { NextPage } from "next";
 import Head from "next/head";
 import { useAccount, useSendTransaction } from "wagmi";
-import styles from "../styles/Home.module.css";
+import CallToActionWithIllustrationLoggedIn from "../components/HeroLoggedIn";
+import CallToActionWithIllustrationLoggedOut from "../components/HeroLoggedOut";
+// import styles from "../styles/Home.module.css";
 
-const NotConnectedInfo: NextPage = () => {
-  return (
-    <Flex
-      direction="row"
-      width="100%"
-      height="90%"
-      alignItems="center"
-      justifyContent="space-between"
-      padding="2rem"
-    >
-      <Flex
-        width="50%"
-        height="100%"
-        direction="column"
-        justifyContent="space-between"
-        gap="3rem"
-      >
-        <Heading>Welcome!</Heading>
+// const NotConnectedInfo: NextPage = () => {
+//   return (
+//     <Flex
+//       direction="row"
+//       width="100%"
+//       height="90%"
+//       alignItems="center"
+//       justifyContent="space-between"
+//       padding="2rem"
+//     >
+//       <Flex
+//         width="50%"
+//         height="100%"
+//         direction="column"
+//         justifyContent="space-between"
+//         gap="3rem"
+//       >
+//         <Heading>Welcome!</Heading>
 
-        <Text>
-          With Protect, you can protect your NFT communities from the predation
-          of mercenaries. Connect your wallet to get started 🚀
-        </Text>
-      </Flex>
-    </Flex>
-  );
-};
+//         <Text fontSize="2xl">
+//           With Protect, you can protect your NFT communities from the predation
+//           of mercenaries. Connect your wallet to get started 🚀
+//         </Text>
+//       </Flex>
+//     </Flex>
+//   );
+// };
 
-const ConnectedInfo: NextPage = () => {
-  return (
-    <Flex
-      direction="row"
-      width="100%"
-      height="90%"
-      alignItems="center"
-      justifyContent="space-between"
-      padding="2rem"
-    >
-      <Flex
-        width="50%"
-        height="100%"
-        direction="column"
-        justifyContent="space-between"
-        gap="3rem"
-      >
-        <Heading>Welcome!</Heading>
+// const ConnectedInfo: NextPage = () => {
+//   return (
+//     <Flex
+//       direction="row"
+//       width="100%"
+//       height="90%"
+//       alignItems="center"
+//       justifyContent="space-between"
+//       padding="2rem"
+//     >
+//       <Flex
+//         width="50%"
+//         height="100%"
+//         direction="column"
+//         justifyContent="space-between"
+//         gap="3rem"
+//       >
+//         <Heading>Welcome!</Heading>
 
-        <Text>
-          With Protect, you can protect your NFT communities from the predation
-          of mercenaries. It&apos;s easy to get started! There are two main
-          resouces to be aware of:
-        </Text>
-        <OrderedList>
-          <ListItem>
-            Add your ERC5000 NFT collections using the sidebar. From there you
-            can apply blocklists to protect your NFT community from mercenary
-            wallets and contracts.
-          </ListItem>
-          <ListItem>
-            Create and customize protect lists using the sidebar. You can use
-            these protect lists to protect your NFT communities!
-          </ListItem>
-        </OrderedList>
-      </Flex>
-    </Flex>
-  );
-};
+//         <Text fontSize="2xl">
+//           With Protect, you can protect your NFT communities from the predation
+//           of mercenaries. It&apos;s easy to get started! Just click the {"'"}
+//           Protect a Collection{"'"} button.
+//         </Text>
+//         {/* <OrderedList fontSize="2xl">
+//           <ListItem mb="30px">
+//             <Text>
+//               Add your ERC5000 NFT collections using the sidebar. From there you
+//               can apply blocklists to protect your NFT community from mercenary
+//               wallets and contracts.
+//             </Text>
+//           </ListItem>
+//           <ListItem>
+//             <Text>
+//               Create and customize protect lists using the sidebar. You can use
+//               these protect lists to protect your NFT communities!
+//             </Text>
+//           </ListItem>
+//         </OrderedList> */}
+//       </Flex>
+//     </Flex>
+//   );
+// };
 
 const Home: NextPage = () => {
   const { isConnected } = useAccount();
@@ -83,8 +88,16 @@ const Home: NextPage = () => {
       },
     });
 
+  const Body = () => {
+    if (isConnected) {
+      return <CallToActionWithIllustrationLoggedIn />;
+    } else {
+      return <CallToActionWithIllustrationLoggedOut />;
+    }
+  };
+
   return (
-    <div className={styles.container}>
+    <div>
       <Head>
         <title>Chira Protect</title>
         <meta
@@ -95,7 +108,7 @@ const Home: NextPage = () => {
       </Head>
 
       <main>
-        {isConnected ? <ConnectedInfo /> : <NotConnectedInfo />}
+        <Body />
 
         {/* <div className={styles.grid}>
           <Link href="https://twitter.com/yanniksood" isExternal>

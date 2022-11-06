@@ -135,7 +135,7 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
         <div key={sectionName}>
           <Text
             style={{
-              margin: "30px 0 0 30px",
+              margin: "30px 0 10px 30px",
               fontSize: "12px",
               textTransform: "uppercase",
               letterSpacing: "1px",
