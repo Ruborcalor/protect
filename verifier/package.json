@@ -4,7 +4,7 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev -p 3001",
     "build": "next build",
     "lint": "next lint",
     "prettier": "prettier '**/*.{json,md}' --ignore-path .gitignore --write"

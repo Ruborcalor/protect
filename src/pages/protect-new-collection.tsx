@@ -453,11 +453,11 @@ const Home: NextPage = () => {
                   In order to let holders to hold the NFT, please ask user to
                   verify account by this link.
                   <Link
-                    href={`https://verifier-chira-protect.vercel.app/${ipfsHash}`}
+                    href={`${process.env.NEXT_PUBLIC_VERIFIER_URI}/${ipfsHash}`}
                     target={"_blank"}
                   >
                     <Text mt="10px" mb="30px" fontSize="xs" color="blue.600">
-                      {`https://verifier-chira-protect.vercel.app/${ipfsHash}`}
+                      {`${process.env.NEXT_PUBLIC_VERIFIER_URI}/${ipfsHash}`}
                     </Text>
                   </Link>
                 </ModalBody>
