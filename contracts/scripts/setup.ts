@@ -75,7 +75,7 @@ async function main() {
     operator: 1,
     // 20020101 refers to the numerical date we're using for our proof request
     // - see proofRequest.ts L489
-    value: [1, ...new Array(63).fill(0).map((i) => 0)], // the value must be 1 = true
+    value: [1, ...new Array(63).fill(0).map(() => 0)], // the value must be 1 = true
     circuitId,
   };
 
